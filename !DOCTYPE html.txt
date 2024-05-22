@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper Wire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .article {
+            background-color: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .article h3 {
+            margin-top: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+    <script>
+        async function fetchNews() {
+            // Replace with your actual news API endpoint
+            const newsResponse = await fetch('https://api.example.com/latest-news');
+            const newsData = await newsResponse.json();
+            return newsData.articles; // Adjust based on the structure of your API response
+        }
+
+        async function fetchMovieLeaks() {
+            // Replace with your actual movie leaks API endpoint
+            const leaksResponse = await fetch('https://api.example.com/movie-leaks');
+            const leaksData = await leaksResponse.json();
+            return leaksData.leaks; // Adjust based on the structure of your API response
+        }
+
+        function renderArticles(sectionId, articles) {
+            const section = document.getElementById(sectionId);
+            section.innerHTML = '';
+            articles.forEach(article => {
+                const articleElement = document.createElement('div');
+                articleElement.className = 'article';
+                articleElement.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.description}</p>
+                `;
+                section.appendChild(articleElement);
+            });
+        }
+
+        async function updateContent() {
+            const newsArticles = await fetchNews();
+            const movieLeaks = await fetchMovieLeaks();
+            renderArticles('latest-news', newsArticles);
+            renderArticles('movie-leaks', movieLeaks);
+        }
+
+        // Update content on page load
+        window.onload = updateContent;
+
+        // Update content every 4 hours (14400000 milliseconds)
+        setInterval(updateContent, 14400000);
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Whisper Wire</h1>
+    </header>
+    <nav>
+        <a href="#latest-news">Latest News</a>
+        <a href="#movie-leaks">New Movie Leaks</a>
+    </nav>
+    <main>
+        <section id="latest-news">
+            <h2>Latest News</h2>
+        </section>
+        <section id="movie-leaks">
+            <h2>New Movie Leaks</h2>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Whisper Wire. All rights reserved.</p>
+    </footer>
+</body>
+</html>
